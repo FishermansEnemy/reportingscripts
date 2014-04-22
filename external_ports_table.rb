@@ -9,7 +9,7 @@ Nessus::Parse.new("//Users//ianwilliams//Documents//testdata//nessus_report_.nes
 		os = "#{host.os}"
 		os.delete!("\n")
 		linestart="#{host.ip},#{os}"
-		Nmap::Parser.parsefile("//Users//ianwilliams//Documents//testdata//Basingstoke//basingstokenmap.xml") do |nmap|
+		Nmap::Parser.parsefile("//Users//ianwilliams//Documents//testdata//nmap.xml") do |nmap|
 			nmaphost = nmap.host(host.ip)
 			[:tcp, :udp].each do |type|
                 nmaphost.getports(type, "open") do |port|
