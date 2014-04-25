@@ -10,13 +10,13 @@ bids = []
 sources = []
 xrefs = []
 hosts = []
-pids = []
+pids = Hash.new()
 
 Nessus::Parse.new("//Users//ianwilliams//Documents//testdata//nessus_report_.nessus") do |scan|
 	scan.each_host do |host|
 		host.each_event do |event|
 			if (event.severity.medium? || event.severity.high? || event.severity.critical?)
-				pids.push event.plugin_id if !pids.include? event.plugin_id
+				pids.merge!(event.plugin_id => event.cvss_base_score) if !pids.key?(event.plugin_id)
 			end
 		end
 	end
@@ -25,7 +25,9 @@ end
 outfile.puts "<HTML>"
 outfile.puts "<BODY>"
 
-pids.each do |pid| 
+pids = Hash[(pids.sort_by{|name,cvss|cvss}.reverse)]
+
+pids.keys.each do |pid| 
 	events = []
 	cves = []
 	bids = []
