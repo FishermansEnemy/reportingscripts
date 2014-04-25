@@ -59,10 +59,12 @@ Nessus::Parse.new("//Users//ianwilliams//Documents//testdata//nessus_report_.nes
 		outfile.puts "#{event}<br>"
 	end
 	outfile.puts "<br>CVE: "
+	cves = cves.sort.reverse
 	cves.each do |cve|
 		outfile.puts "<a href=\"http://web.nvd.nist.gov/view/vuln/detail?vulnId=#{cve}\">#{cve}</a>, "
 	end
 	outfile.puts "<br>BID: "
+	bids = bids.sort.reverse
 	bids.each do |bid|
 		outfile.puts "<a href=\"http://www.securityfocus.com/bid/#{bid}\">#{bid}</a>, "
 	end
