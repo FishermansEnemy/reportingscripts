@@ -43,6 +43,7 @@ Nessus::Parse.new("//Users//ianwilliams//Documents//testdata//nessus_report_.nes
 	puts events.sort
 	puts cves.sort.reverse
 	puts bids.sort.reverse
+	xrefs = xrefs.sort.reverse
 	sources.each do |source|
 		puts source
 		xrefs.each do |xref|
