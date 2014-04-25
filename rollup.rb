@@ -12,7 +12,7 @@ hosts = []
 Nessus::Parse.new("//Users//ianwilliams//Documents//testdata//nessus_report_.nessus") do |scan|
 	scan.each_host do |host|
 		host.each_event do |event|
-			if (event.name.include?"System Management") && (!event.name.include?"Detection")
+			if (event.name.include?"ESX") && (!event.name.include?"detection")
 				#puts "#{event.plugin_id}-#{event.name}-CVE:#{event.cve}-BID:#{event.bid}-XREF:#{event.xref}" if (event.cvss_base_score !=false && event.cvss_base_score == 10)
 				events.push event.name if !events.include? event.name
 				event.cve.each do |cve|
@@ -72,12 +72,13 @@ Nessus::Parse.new("//Users//ianwilliams//Documents//testdata//nessus_report_.nes
 		outfile.puts "<br>#{source}: "
 		xrefs.each do |xref|
 			if xref.include? source
-				if ["OSVDB", "CWE", "Secunia", "CERT", "EDB-ID"].include? source
+				if ["OSVDB", "CWE", "Secunia", "CERT", "EDB-ID", "VMSA"].include? source
 					outfile.puts "<a href=\"http://osvdb.org/#{xref.split(':')[1]}\">#{xref.split(':')[1]}</a>, " if source == "OSVDB"
 					outfile.puts "<a href=\"http://cwe.mitre.org/data/definitions/#{xref.split(':')[1]}\">#{xref.split(':')[1]}</a>, " if source == "CWE"
 					outfile.puts "<a href=\"http://secunia.com/advisories/#{xref.split(':')[1]}\">#{xref.split(':')[1]}</a>, " if source == "Secunia"
 					outfile.puts "<a href=\"http://www.kb.cert.org/vuls/id/#{xref.split(':')[1]}\">#{xref.split(':')[1]}</a>, " if source == "CERT"
 					outfile.puts "<a href=\"http://www.exploit-db.com/exploits/#{xref.split(':')[1]}\">#{xref.split(':')[1]}</a>, " if source == "EDB-ID"
+					outfile.puts "<a href=\"https://www.vmware.com/security/advisories/VMSA-#{xref.split(':')[1]}.html\">#{xref.split(':')[1]}</a>, " if source == "VMSA"
 				else outfile.puts "#{xref.split(':')[1]}, "
 				end
 			end
