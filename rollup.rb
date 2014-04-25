@@ -40,31 +40,23 @@ Nessus::Parse.new("//Users//ianwilliams//Documents//testdata//nessus_report_.nes
 			end
 		end
 	end
+	puts "Rolled up the following vulnerabilities:"
 	puts events.sort
-	puts cves.sort.reverse
-	puts bids.sort.reverse
+
 	xrefs = xrefs.sort.reverse
-	sources.each do |source|
-		puts source
-		xrefs.each do |xref|
-			if xref.include? source
-				puts "\t#{xref.split(':')[1]}"
-			end
-		end
-	end
-	puts hosts.sort.reverse
+	cves = cves.sort.reverse
+	bids = bids.sort.reverse
+
 	outfile.puts "<HTML>"
 	outfile.puts "<BODY>"
 	events.each do |event|
 		outfile.puts "#{event}<br>"
 	end
 	outfile.puts "<br>CVE: "
-	cves = cves.sort.reverse
 	cves.each do |cve|
 		outfile.puts "<a href=\"http://web.nvd.nist.gov/view/vuln/detail?vulnId=#{cve}\">#{cve}</a>, "
 	end
 	outfile.puts "<br>BID: "
-	bids = bids.sort.reverse
 	bids.each do |bid|
 		outfile.puts "<a href=\"http://www.securityfocus.com/bid/#{bid}\">#{bid}</a>, "
 	end
@@ -95,6 +87,6 @@ Nessus::Parse.new("//Users//ianwilliams//Documents//testdata//nessus_report_.nes
 			linecount =0
 		end
 	end
-	outfile.puts("<pre></body></html>")
+	outfile.puts("</pre></body></html>")
 	outfile.close
 end
