@@ -3,7 +3,7 @@ require 'nessus'
 
 outfile = File.new("vulnerabilties.csv","w")
 
-Nessus::Parse.new("//Users//ianwilliams//Documents//testdata//DudleyMBC//nessus_report_Dudley1.nessus") do |scan|
+Nessus::Parse.new("//Users//ianwilliams//Documents//testdata//nessus_report.nessus") do |scan|
 	scan.each_host do |host|
 		high = host.high_severity_count
 		medium = host.medium_severity_count
