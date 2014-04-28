@@ -80,11 +80,12 @@ Nessus::Parse.new("//Users//ianwilliams//Documents//testdata//nessus_report_.nes
 	outfile.puts "<pre style=\"word-wrap: break-word; white-space; pre-wrap\">"
 	linecount = 0
 	hosts.each do |host|
-		outfile.print "#{host}\t"
+		outfile.print "#{host}"
 		linecount +=1
 		if linecount == 4
 			outfile.puts "\n"
 			linecount =0
+		else outfile.print "\t"
 		end
 	end
 	outfile.puts("</pre></body></html>")
