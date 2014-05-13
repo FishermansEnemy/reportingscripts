@@ -72,7 +72,6 @@ class Host
 	firstline = true
 
 	vulns.each do |vuln|
-		puts vuln.severity
 		case vuln.severity
 		when "CRITICAL"
 			colour = "cf9"
@@ -81,7 +80,6 @@ class Host
 		when "MEDIUM"
 			colour = "cf10" 
 		end
-		puts colour
 		if firstline
 			output += <<line
 \\itap1\\trowd \\taflags1 \\trgaph108\\trleft-108 \\trcbpat1 \\trbrdrl\\brdrnil \\trbrdrr\\brdrnil 
