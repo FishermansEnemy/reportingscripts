@@ -1,5 +1,27 @@
 require 'rubygems'
 require 'nessus'
+require 'optparse'
+
+options = {}
+
+optparse = OptionParser.new do|opt|
+	opt.banner = "Usage: internal_vunerabilities_details_fast --nessus [NESSUSFILE]"
+	  opt.separator  ""
+	  opt.separator  "Options"
+
+	opt.on( '-n', '--nessus NESSUSFILE', "Nessus XML file" ) do|nessus|
+  		options[:nessus] = nessus
+	end
+
+	opt.on("--include=[x,y,z]", "Words to include", Array) do |inclist|
+		options[:include] = inclist
+	end
+	opt.on("--exclude=[x,y,z]", "Words to exclude", Array) do |exlist|
+		options[:exclude] = exlist
+	end
+end
+
+optparse.parse!
 
 outfile = File.new("rolledup_vulns.html","w")
 events = []
@@ -9,10 +31,17 @@ sources = []
 xrefs = []
 hosts = []
 
-Nessus::Parse.new("//Users//ianwilliams//Documents//testdata//nessus_report_.nessus") do |scan|
+Nessus::Parse.new(options[:nessus]) do |scan|
 	scan.each_host do |host|
 		host.each_event do |event|
-			if (event.name.include?"ESX") && (!event.name.include?"detection")
+			valid = false
+			options[:include].each do |included|
+				if (event.name.include? included) then valid=true end
+			end
+			options[:exclude].each do |excluded|
+				if (event.name.include? excluded) then valid=false end
+			end
+			if valid
 				#puts "#{event.plugin_id}-#{event.name}-CVE:#{event.cve}-BID:#{event.bid}-XREF:#{event.xref}" if (event.cvss_base_score !=false && event.cvss_base_score == 10)
 				events.push event.name if !events.include? event.name
 				event.cve.each do |cve|

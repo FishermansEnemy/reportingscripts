@@ -15,7 +15,6 @@ Nessus::Parse.new("//Users//ianwilliams//Documents//testdata//nessus_report.ness
 			if (event.severity.medium? || event.severity.high? || event.severity.critical?)
 				outfile.puts linestart+lineend
 				linestart = ",,"
-				linestart+="#{host.os.delete"\n"}" if host.os.respond_to?('delete')
 			end
 		end
 	end

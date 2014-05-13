@@ -1,5 +1,20 @@
 require 'rubygems'
 require 'nessus'
+require 'optparse'
+
+options = {}
+
+optparse = OptionParser.new do|opt|
+	opt.banner = "Usage: internal_vulnerabilities_details.rb --nessus [NESSUSFILE]"
+	  opt.separator  ""
+	  opt.separator  "Options"
+
+	opt.on( '-n', '--nessus NESSUSFILE', "Nessus XML file" ) do|nessus|
+  		options[:nessus] = nessus
+	end
+end
+
+optparse.parse!
 
 # Outputs a file containing the event name, references and formated hosts table for each medium, high and critical vuln
 
@@ -12,7 +27,7 @@ xrefs = []
 hosts = []
 pids = Hash.new()
 
-Nessus::Parse.new("//Users//ianwilliams//Documents//testdata//nessus_report_.nessus") do |scan|
+Nessus::Parse.new(options[:nessus]) do |scan|
 	scan.each_host do |host|
 		host.each_event do |event|
 			if (event.severity.medium? || event.severity.high? || event.severity.critical?)
